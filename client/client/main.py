@@ -1,12 +1,12 @@
-from time import sleep
-
 import uvicorn
 from fastapi import FastAPI
+from fastapi_utils.tasks import repeat_every
 from loguru import logger
 
 from client.api.v1 import api_v1
 from client.core.log import setup_logger
 from client.core.settings import settings
+from client.loop.loop import loop
 
 
 def create_app():
@@ -30,13 +30,10 @@ async def shutdown_event():
     logger.bind().info("shutdown event ...")
 
 
-# def main():
-#     while True:
-#         # stat = get_disk_usage("/")
-#         # is_alert, alert_msg = alert_for_disk_usage(stat, free_bytes=20182291968)
-#         # print(f"stat:{stat}, is_alert:{is_alert} {alert_msg}")
-#         # print(ray.get(obj_ref))
-#         # sleep(60 * .5)
+@app.on_event("startup")
+@repeat_every(seconds=10, logger=logger)  # 1 min
+def infinite_loop():
+    loop()
 
 
 if __name__ == "__main__":
