@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi_utils.tasks import repeat_every
 from loguru import logger
 
-from client.api.v1 import api_v1
+from client.api.api_v1 import api
 from client.core.log import setup_logger
 from client.core.settings import settings
 from client.loop.loop import loop
@@ -11,7 +11,7 @@ from client.loop.loop import loop
 
 def create_app():
     fastapi = FastAPI()
-    fastapi.include_router(router=api_v1.router, prefix=f"/{settings.API_V1_STR}")
+    fastapi.include_router(router=api.router, prefix=f"/{settings.API_V1_STR}")
     return fastapi
 
 
