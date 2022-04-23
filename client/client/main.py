@@ -31,9 +31,9 @@ async def shutdown_event():
 
 
 @app.on_event("startup")
-@repeat_every(seconds=10, logger=logger)  # 1 min
-def infinite_loop():
-    loop()
+@repeat_every(seconds=60, logger=logger)  # 1 min
+async def infinite_loop():
+    await loop()
 
 
 if __name__ == "__main__":

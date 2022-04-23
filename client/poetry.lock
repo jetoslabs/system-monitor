@@ -149,6 +149,17 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "nats-py"
+version = "2.1.0"
+description = "NATS client for Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+nkeys = ["nkeys"]
+
+[[package]]
 name = "packaging"
 version = "21.3"
 description = "Core utilities for Python packages"
@@ -326,7 +337,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b878637b43bd1dd2960a0615cd1a621fd57b2dc2674987bbcac76c2cc40ba276"
+content-hash = "5f0f87a04497cc43cb64f06dbd3a9a478a29d60cf6ac145450b98500391b9c98"
 
 [metadata.files]
 anyio = [
@@ -433,6 +444,9 @@ loguru = [
 more-itertools = [
     {file = "more-itertools-8.12.0.tar.gz", hash = "sha256:7dc6ad46f05f545f900dd59e8dfb4e84a4827b97b3cfecb175ea0c7d247f6064"},
     {file = "more_itertools-8.12.0-py3-none-any.whl", hash = "sha256:43e6dd9942dffd72661a2c4ef383ad7da1e6a3e968a927ad7a6083ab410a688b"},
+]
+nats-py = [
+    {file = "nats-py-2.1.0.tar.gz", hash = "sha256:e849ec9099ead4fc1ebc92f254c93753092c19d8c3c1031181b9ac612d232a12"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},

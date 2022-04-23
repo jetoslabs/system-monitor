@@ -2,13 +2,23 @@ import shutil
 from typing import Tuple
 from loguru import logger
 
+from client.clients.nats import send_vitals
 from client.core.constants import DigitalInfoEnum
+from client.schemas.schema_vitals import DiskSpaceSchema, VitalsSchema
 
 
-def run():
+async def run():
     logger.bind().debug("disk usage...")
-    is_alert, alert_msg = alert_for_disk_usage("/", free_bytes=20*DigitalInfoEnum.gb)
-    logger.bind(is_alert=is_alert, alert_msg=alert_msg).debug(f"disk usage")
+    diskspace: DiskSpaceSchema = alert_for_disk_usage("/", free_bytes=50*DigitalInfoEnum.gb)
+
+    vitals = VitalsSchema(
+        diskspace=diskspace
+    )
+    logger.bind(vitals=vitals).debug(f"vitals")
+
+    # send vitals to NATS topic vitals, on alert
+    if vitals and vitals.diskspace and vitals.diskspace.is_alert:
+        await send_vitals(vitals)
 
 
 def get_disk_usage(path: str) -> Tuple[int, int, int]:
@@ -17,9 +27,16 @@ def get_disk_usage(path: str) -> Tuple[int, int, int]:
     return stat
 
 
-def alert_for_disk_usage(path: str, free_bytes: int) -> (bool, str):
+def alert_for_disk_usage(path: str, free_bytes: int) -> DiskSpaceSchema:
     total, used, free = get_disk_usage(path)
+    alert = False
     if free < free_bytes:
-        return True, f"ALERT! Free disk space: {round(free/DigitalInfoEnum.gb, 1)} gb is less than the threshold: {round(free_bytes/DigitalInfoEnum.gb, 1)} gb"
-    else:
-        return False, f"Free disk space: {round(free/DigitalInfoEnum.gb, 1)} gb is more than the threshold: {round(free_bytes/DigitalInfoEnum.gb, 1)} gb"
+        alert = True
+
+    diskspace = DiskSpaceSchema(
+        is_alert=alert,
+        total=total,
+        used=used,
+        free=free
+    )
+    return diskspace

@@ -10,5 +10,8 @@ class Settings(BaseSettings):
     APP_WORKERS = 2
     API_V1_STR = "v1"
 
+    NATS_URI = "nats://127.0.0.1:4222"
+    NATS_TOPIC_VITALS = "vitals"
+
 
 settings = Settings()
