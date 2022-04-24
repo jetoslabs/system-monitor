@@ -3,7 +3,9 @@ from typing import Tuple
 from loguru import logger
 
 from client.clients.nats import send_vitals
+from client.controllers.twitter import Twitter
 from client.core.constants import DigitalInfoEnum
+from client.schemas.schema_twitter import TweetReqSchema
 from client.schemas.schema_vitals import DiskSpaceSchema, VitalsSchema
 
 
@@ -16,9 +18,14 @@ async def run():
     )
     logger.bind(vitals=vitals).debug(f"vitals")
 
-    # send vitals to NATS topic vitals, on alert
     if vitals and vitals.diskspace and vitals.diskspace.is_alert:
+        # send vitals to NATS topic vitals, on alert
         await send_vitals(vitals)
+
+        tweet_req = TweetReqSchema(text=f"Alert: Free space is now {round(vitals.diskspace.free/DigitalInfoEnum.gb, 1)} gb")
+        # send tweet
+        tweet_res = Twitter.create_tweet(tweet_req)
+        logger.bind(tweet_req=tweet_req, tweet_res=tweet_res).info("Tweeted")
 
 
 def get_disk_usage(path: str) -> Tuple[int, int, int]:
