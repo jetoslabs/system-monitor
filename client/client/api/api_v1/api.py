@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 
-from client.api.api_v1.endpoints import hello, disk_space
+from client.api.api_v1.endpoints import twitter, disk_space
 
 router = APIRouter()
-router.include_router(hello.router, prefix="/hello", tags=["hello"])
-router.include_router(disk_space.router, prefix="/monitor", tags=["monitor"])
+router.include_router(disk_space.router, prefix="/diskspace", tags=["diskspace"])
+router.include_router(twitter.router, prefix="/twitter", tags=["twitter"])
+

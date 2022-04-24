@@ -13,5 +13,10 @@ class Settings(BaseSettings):
     NATS_URI = "nats://127.0.0.1:4222"
     NATS_TOPIC_VITALS = "vitals"
 
+    TWITTER_CONSUMER_KEY = ""
+    TWITTER_CONSUMER_SECRET = ""
+    TWITTER_ACCESS_TOKEN = ""
+    TWITTER_ACCESS_TOKEN_SECRET = ""
+
 
 settings = Settings()

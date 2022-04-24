@@ -7,6 +7,6 @@ from client.schemas.schema_vitals import DiskSpaceSchema
 router = APIRouter()
 
 
-@router.get("/disk_space")
+@router.get("/check")
 async def disk_space(threshold_gb: float = 20) -> DiskSpaceSchema:
     return alert_for_disk_usage("/", threshold_gb * DigitalInfoEnum.gb)
