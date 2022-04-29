@@ -19,8 +19,8 @@ async def run():
     logger.bind(vitals=vitals).debug(f"vitals")
 
     if vitals and vitals.diskspace and vitals.diskspace.is_alert:
-        # send vitals to NATS topic vitals, on alert
-        await send_vitals(vitals)
+        # # send vitals to NATS topic vitals, on alert
+        # await send_vitals(vitals)
 
         tweet_req = TweetReqSchema(text=f"Alert: Free space is now {round(vitals.diskspace.free/DigitalInfoEnum.gb, 1)} gb")
         # send tweet
